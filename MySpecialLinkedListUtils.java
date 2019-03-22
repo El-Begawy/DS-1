@@ -17,7 +17,7 @@ public class MySpecialLinkedListUtils {
         for (int i = 0; i < (count / 2) - 1; i++) {
             temp = temp.getNext();
         }
-        if(count%2==1)
+        if(count%2==0)
         {
             x[2]+=temp.getNext().getValue();
         }
