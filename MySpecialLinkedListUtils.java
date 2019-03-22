@@ -17,13 +17,14 @@ public class MySpecialLinkedListUtils {
         for (int i = 0; i < (count / 2) - 1; i++) {
             temp = temp.getNext();
         }
-        if(count%2==0)
-        {
-            x[2]+=temp.getNext().getValue();
-        }
+
         x[1] = x[0] / count;
         x[2] = temp.getValue();
-        return x;
+        if(count%2==0) {
+            x[2] += temp.getNext().getValue();
+            x[2] /= 2;
+        }
+            return x;
     }
 
     public static LinkedListNode reverse(LinkedListNode head) {
