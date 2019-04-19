@@ -21,10 +21,10 @@ public class PolynomialSolver implements IPolynomialSolver {
         }
     }
     private SingleLinkedList R;
-    private SingleLinkedList A, B, C;
+    private SingleLinkedList A = new SingleLinkedList(), B = new SingleLinkedList(), C = new SingleLinkedList();
     public class Sorter implements Comparator<int[]> {
         public int compare(int[] a, int[] b) {
-            return Integer.compare(a[1], b[1]);
+            return Integer.compare(b[1], a[1]);
         }
     }
     public Boolean isValidPoly(char poly)
@@ -100,7 +100,8 @@ public class PolynomialSolver implements IPolynomialSolver {
         SingleLinkedList S1 = CharToList(poly1),S2 = CharToList(poly2);
         if(isListCleared(S1) || isListCleared(S2))
             throw new RuntimeException("The list is Cleared or uninitialized");
-        //TBD
+        R = new SingleLinkedList();
+        
         return null;
     }
     public int[][] subtract(char poly1, char poly2)
