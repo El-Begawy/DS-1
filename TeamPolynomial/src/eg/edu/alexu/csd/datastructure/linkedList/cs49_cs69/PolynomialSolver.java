@@ -141,7 +141,7 @@ public class PolynomialSolver implements IPolynomialSolver {
         SingleLinkedList S1 = CharToList(poly1),S2 = CharToList(poly2);
         if(isListCleared(S1) || isListCleared(S2))
             throw new RuntimeException("The list is Cleared or uninitialized");
-        int[][] result = new int[S1.size()+S2.size()][2];
+        int[][] result = new int[S1.size()*S2.size()][2];
         if(R == null)
             R = new SingleLinkedList();
         R.clear();
