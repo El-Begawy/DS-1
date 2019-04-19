@@ -29,7 +29,7 @@ public class PolynomialSolver implements IPolynomialSolver {
     }
     public Boolean isValidPoly(char poly)
     {
-        return ((poly >= 'A' && poly <= 'C') || poly == 'R');
+        return (poly >= 'A' && poly <= 'C');
     }
     public Boolean isListCleared(SingleLinkedList S)
     {
@@ -55,7 +55,7 @@ public class PolynomialSolver implements IPolynomialSolver {
     {
         if(str.matches(".*[^\\-0123456789() ,]+.*"))
             throw new RuntimeException("Invalid Input");
-        String parts[] = str.split(",");
+        String[] parts = str.split(",");
         if(parts.length == 0 || parts.length % 2 > 0)
             throw new RuntimeException("Invalid Input");
         for(int i =0;i < parts.length;i++)
@@ -103,7 +103,7 @@ public class PolynomialSolver implements IPolynomialSolver {
         if(isListCleared(S1) || isListCleared(S2))
             throw new RuntimeException("The list is Cleared or uninitialized");
         R = new SingleLinkedList();
-        
+
         return null;
     }
     public int[][] subtract(char poly1, char poly2)
@@ -116,10 +116,55 @@ public class PolynomialSolver implements IPolynomialSolver {
         //TBD
         return null;
     }
+    private int[][] removedupes(int[][] terms)
+    {
+        for(int i = 0;i < terms.length;i++)
+        {
+            int coeffsum = terms[i][0];
+            int current = terms[i][1];
+            for(int j = i+1;j < terms.length;j++)
+            {
+                if(current == terms[j][1])
+                {
+                    coeffsum += terms[j][0];
+                    terms[j][1]=0;
+                }
+            }
+            terms[i][0] = coeffsum;
+        }
+        return terms;
+    }
     public int[][] multiply(char poly1, char poly2)
     {
-        //TBD
-        return null;
+        if(!isValidPoly(poly1) || !isValidPoly(poly2))
+            throw new RuntimeException("Invalid Variable");
+        SingleLinkedList S1 = CharToList(poly1),S2 = CharToList(poly2);
+        if(isListCleared(S1) || isListCleared(S2))
+            throw new RuntimeException("The list is Cleared or uninitialized");
+        int[][] result = new int[S1.size()*S2.size()][2];
+        if(R == null)
+            R = new SingleLinkedList();
+        R.clear();
+        for(int i = 0;i < S1.size();i++)
+        {
+            polynomial x1 = (polynomial)S1.get(i);
+            for (int j = 0; j < S2.size(); j++)
+            {
+                polynomial x2 = (polynomial)S2.get(j);
+                polynomial poly = new polynomial(x1.getCoefficient()*x2.getCoefficient(),x1.getExponent()+x2.getExponent());
+                result[i+j][0] = poly.getCoefficient();
+                result[i+j][1] = poly.getExponent();
+            }
+        }
+        Arrays.sort(result,new Sorter());
+        removedupes(result);
+        for(int i = 0; i < result.length;i++)
+        {
+            polynomial poly = new polynomial(result[i][0],result[i][1]);
+            if(poly.getExponent() != 0)
+                R.add(poly);
+        }
+        return result;
     }
     public void setPolynomial(char poly, int[][] terms) {
 
