@@ -1,5 +1,6 @@
 package eg.edu.alexu.csd.datastructure.linkedList.cs49_cs69;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.Scanner;
 
 public class Main {
@@ -8,12 +9,12 @@ public class Main {
         Scanner Sc = new Scanner(System.in);
 	    String inp = Sc.nextLine();
 	    int tmp[][] = polySolver.StringTokens(inp);
-	    if(tmp == null)
-	        return;
-	    for(int i = 0;i < tmp.length;i++)
-	        System.out.println(tmp[i][0] + " " + tmp[i][1]);
 	    polySolver.setPolynomial('A',tmp);
-	    polySolver.print('A');
+	    inp = Sc.nextLine();
+	    tmp = polySolver.StringTokens(inp);
+	    polySolver.setPolynomial('B',tmp);
+	    polySolver.add('A','B');
+	    System.out.println(polySolver.print('R'));
 
     }
 }

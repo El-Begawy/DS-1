@@ -20,16 +20,16 @@ public class PolynomialSolver implements IPolynomialSolver {
             return exponent;
         }
     }
-    private SingleLinkedList R;
+    private SingleLinkedList R = new SingleLinkedList();
     private SingleLinkedList A = new SingleLinkedList(), B = new SingleLinkedList(), C = new SingleLinkedList();
     public class Sorter implements Comparator<int[]> {
         public int compare(int[] a, int[] b) {
-            return Integer.compare(b[1], a[1]);
+            return Integer.compare(Integer.valueOf(b[1]), Integer.valueOf(a[1]));
         }
     }
     public Boolean isValidPoly(char poly)
     {
-        return (poly >= 'A' && poly <= 'C');
+        return ((poly >= 'A' && poly <= 'C') || poly == 'R');
     }
     public Boolean isListCleared(SingleLinkedList S)
     {
@@ -102,9 +102,46 @@ public class PolynomialSolver implements IPolynomialSolver {
         SingleLinkedList S1 = CharToList(poly1),S2 = CharToList(poly2);
         if(isListCleared(S1) || isListCleared(S2))
             throw new RuntimeException("The list is Cleared or uninitialized");
-        R = new SingleLinkedList();
-
-        return null;
+        int i = 0,j = 0;
+        ArrayList<polynomial> myArr = new ArrayList<>();
+        for(;i < S1.size() && j < S2.size();)
+        {
+            polynomial X1 = (polynomial)S1.get(i);
+            polynomial X2 = (polynomial)S2.get(j);
+            if(X1.exponent == X2.exponent)
+            {
+                myArr.add(new polynomial(X1.coefficient + X2.coefficient,X1.exponent));
+                i++;
+                j++;
+            } else if(X1.exponent > X2.exponent)
+            {
+                myArr.add(new polynomial(X1.coefficient,X1.exponent));
+                i++;
+            } else {
+                myArr.add(new polynomial(X2.coefficient,X2.exponent));
+                j++;
+            }
+        }
+        for(;i < S1.size();i++)
+        {
+            polynomial X1 = (polynomial)S1.get(i);
+            myArr.add(new polynomial(X1.coefficient,X1.exponent));
+        }
+        for(;j < S2.size();i++)
+        {
+            polynomial X1 = (polynomial)S2.get(j);
+            myArr.add(new polynomial(X1.coefficient,X1.exponent));
+        }
+        int ret[][] = new int[myArr.size()][2];
+        for(int x = 0;x < myArr.size();x++)
+        {
+            polynomial X1 = myArr.get(x);
+            ret[x][0] = X1.coefficient;
+            ret[x][1] = X1.exponent;
+        }
+        Arrays.sort(ret,new Sorter());
+        setPolynomial('R',ret);
+        return ret;
     }
     public int[][] subtract(char poly1, char poly2)
     {
@@ -113,8 +150,46 @@ public class PolynomialSolver implements IPolynomialSolver {
         SingleLinkedList S1 = CharToList(poly1),S2 = CharToList(poly2);
         if(isListCleared(S1) || isListCleared(S2))
             throw new RuntimeException("The list is Cleared or uninitialized");
-        //TBD
-        return null;
+        int i = 0,j = 0;
+        ArrayList<polynomial> myArr = new ArrayList<>();
+        for(;i < S1.size() && j < S2.size();)
+        {
+            polynomial X1 = (polynomial)S1.get(i);
+            polynomial X2 = (polynomial)S2.get(j);
+            if(X1.exponent == X2.exponent)
+            {
+                myArr.add(new polynomial(X1.coefficient - X2.coefficient,X1.exponent));
+                i++;
+                j++;
+            } else if(X1.exponent > X2.exponent)
+            {
+                myArr.add(new polynomial(X1.coefficient,X1.exponent));
+                i++;
+            } else {
+                myArr.add(new polynomial(-X2.coefficient,X2.exponent));
+                j++;
+            }
+        }
+        for(;i < S1.size();i++)
+        {
+            polynomial X1 = (polynomial)S1.get(i);
+            myArr.add(new polynomial(X1.coefficient,X1.exponent));
+        }
+        for(;j < S2.size();i++)
+        {
+            polynomial X1 = (polynomial)S2.get(j);
+            myArr.add(new polynomial(-X1.coefficient,X1.exponent));
+        }
+        int ret[][] = new int[myArr.size()][2];
+        for(int x = 0;x < myArr.size();x++)
+        {
+            polynomial X1 = myArr.get(x);
+            ret[x][0] = X1.coefficient;
+            ret[x][1] = X1.exponent;
+        }
+        Arrays.sort(ret,new Sorter());
+        setPolynomial('R',ret);
+        return ret;
     }
     private int[][] removedupes(int[][] terms)
     {
@@ -142,8 +217,6 @@ public class PolynomialSolver implements IPolynomialSolver {
         if(isListCleared(S1) || isListCleared(S2))
             throw new RuntimeException("The list is Cleared or uninitialized");
         int[][] result = new int[S1.size()*S2.size()][2];
-        if(R == null)
-            R = new SingleLinkedList();
         R.clear();
         for(int i = 0;i < S1.size();i++)
         {
@@ -158,12 +231,7 @@ public class PolynomialSolver implements IPolynomialSolver {
         }
         Arrays.sort(result,new Sorter());
         removedupes(result);
-        for(int i = 0; i < result.length;i++)
-        {
-            polynomial poly = new polynomial(result[i][0],result[i][1]);
-            if(poly.getExponent() != 0)
-                R.add(poly);
-        }
+        setPolynomial('R',result);
         return result;
     }
     public void setPolynomial(char poly, int[][] terms) {
@@ -193,6 +261,8 @@ public class PolynomialSolver implements IPolynomialSolver {
         String L = "";
         for (int i = 0; i < tobeused.size(); i++) {
             polynomial x = (polynomial) tobeused.get(i);
+            if(x.coefficient == 0)
+                continue;
             if (i > 0)
                 L += x.coefficient > 0 ? " + " : ' ';
             L += x.coefficient;
@@ -201,7 +271,7 @@ public class PolynomialSolver implements IPolynomialSolver {
                 L += x.exponent;
             }
             if (x.exponent == 1)
-                L += x;
+                L += "x";
         }
         return L;
     }
