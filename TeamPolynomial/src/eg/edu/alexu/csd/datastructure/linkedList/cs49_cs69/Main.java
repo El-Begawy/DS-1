@@ -12,5 +12,8 @@ public class Main {
 	        return;
 	    for(int i = 0;i < tmp.length;i++)
 	        System.out.println(tmp[i][0] + " " + tmp[i][1]);
+	    polySolver.setPolynomial('A',tmp);
+	    polySolver.print('A');
+
     }
 }
