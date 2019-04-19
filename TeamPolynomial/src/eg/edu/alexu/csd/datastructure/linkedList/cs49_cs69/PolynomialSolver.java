@@ -29,7 +29,7 @@ public class PolynomialSolver implements IPolynomialSolver {
     }
     public Boolean isValidPoly(char poly)
     {
-        return (poly >= 'A' && poly <= 'C');
+        return ((poly >= 'A' && poly <= 'C') || poly == 'R');
     }
     public Boolean isListCleared(SingleLinkedList S)
     {
@@ -45,6 +45,8 @@ public class PolynomialSolver implements IPolynomialSolver {
                 return B;
             case 'C':
                 return C;
+            case 'R':
+                return R;
             default:
                 throw new RuntimeException("Invalid Variable");
         }
