@@ -91,7 +91,7 @@ public class PolynomialSolver implements IPolynomialSolver {
         for(int i = 0;i < Sz;i++)
         {
             polynomial pol = (polynomial) singleList.get(i);
-            ans += Math.pow(pol.getCoefficient(),pol.getExponent());
+            ans += pol.getCoefficient()*Math.pow(value,pol.getExponent());
         }
         return ans;
     }
