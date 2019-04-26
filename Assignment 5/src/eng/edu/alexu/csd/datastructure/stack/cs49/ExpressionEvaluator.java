@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package eng.edu.alexu.csd.datastructure.stack.cs49;
 
 public class ExpressionEvaluator implements IExpressionEvaluator {
