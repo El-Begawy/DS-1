@@ -47,13 +47,13 @@ public class ExpressionEvaluator implements IExpressionEvaluator {
             else if(x == '*' || x == '+' || x == '-' || x == '/')
             {
                 if(operators.isEmpty())
-                //if stack is empty, push the operator
+                    //if stack is empty, push the operator
                 {
                     operators.push(x);
                     continue;
                 }
                 if(priorities(x,(char)operators.peek()))
-                //if the operator is of higher priority than top of stack
+                    //if the operator is of higher priority than top of stack
                 {
                     operators.push(x);
                 }
@@ -134,17 +134,17 @@ public class ExpressionEvaluator implements IExpressionEvaluator {
             char x = expression.charAt(i);
             if(x >= '0' && x <= '9') {
                 if (expression.charAt(i + 1) < '0' || expression.charAt(i + 1) > '9')
-                    result.push((float)values[k++]);//push if number
+                    result.push(values[k++]);//push if number
             }
             else if(x == '*' || x == '+' || x == '-' || x == '/')
             {
-                float done = 0;//result of operation
+                int done = 0;//result of operation
                 if(result.isEmpty())
                     throw new RuntimeException("Invalid expression");
-                float op2 = (float)result.pop();
+                int op2 = (int)result.pop();
                 if(result.isEmpty())
                     throw new RuntimeException("Invalid expression");
-                float op1 = (float)result.pop();//pop the operands from the stack
+                int op1 = (int)result.pop();//pop the operands from the stack
                 switch(x)//perform the operation
                 {
                     case '*': done = op1 * op2; break;
@@ -160,6 +160,6 @@ public class ExpressionEvaluator implements IExpressionEvaluator {
         }
         if(result.size() != 1)
             throw new RuntimeException("Unbalanced expression");//more than 2 numbers remain in the stack meaning an invalid expression
-        return Math.round((float)result.pop());//return the result(last member of stack)
+        return (int)result.pop();//return the result(last member of stack)
     }
 }
