@@ -1,4 +1,4 @@
-package eg.edu.alexu.csd.datastructure.linkedList.cs49_cs69;
+package eg.edu.alexu.csd.datastructure.queue.cs_cs_cs;
 
 public class SingleLinkedList implements ILinkedList {
     public class SLLNode
