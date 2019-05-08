@@ -33,30 +33,38 @@ public class MazeSolver implements IMazeSolver {
 
         return path;
     }
-
     private char[][] prepare(File maze) {
         Scanner sc;
         try {
             sc = new Scanner(maze);
-        } catch (FileNotFoundException var7) {
+        } catch (FileNotFoundException E) {
             throw new RuntimeException("File not found");
         }
-
+        boolean Existence = false , Startup = false;
         n = sc.nextInt();
         m = sc.nextInt();
         char[][] Map = new char[n][m];
 
         for(int i = 0; i < n; ++i) {
             String x = sc.next();
-
+            if(x.length() != m)
+                throw new RuntimeException("Incorrect width");
             for(int j = 0; j < m; ++j) {
                 Map[i][j] = x.charAt(j);
-                if (Map[i][j] == 'S') {
+                if (Map[i][j] == 'S')
+                {
+                    Startup = true;
                     S.y = i;
                     S.x = j;
                 }
+                if (Map[i][j] == 'E')
+                {
+                    Existence = true;
+                }
             }
         }
+        if(!Existence || !Startup)
+            throw new RuntimeException("Map doesn't have an exit or a start");
 
         return Map;
     }
