@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"eng.edu.alexu.csd.datastructure.stack.cs49","l":"ExpressionEvaluator"}]
